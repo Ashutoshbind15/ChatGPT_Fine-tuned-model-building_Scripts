@@ -1,12 +1,6 @@
-import OpenAI from "openai";
 import "dotenv/config";
-
 import axios from "axios";
 import { v4 } from "uuid";
-
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
 
 var apiUrl = "https://api.videoindexer.ai";
 var apiKey = process.env.AZURE_INDEXER_API_KEY;
@@ -37,23 +31,32 @@ async function getAccessToken() {
   return accessToken;
 }
 
+const uploadVideo = async (accessToken, videoUrl) => {
+  const queryParams = createQueryString({
+    name: "test",
+    videoUrl: videoUrl,
+  });
+
+  const { data } = await axios.post(
+    `${apiUrl}/${accountLocation}/Accounts/${accountId}/Videos?${queryParams}`,
+    null,
+    {
+      headers: {
+        "x-ms-client-request-id": v4(),
+        Authorization: `Bearer ${accessToken}`,
+        "Ocp-Apim-Subscription-Key": apiKey,
+      },
+    }
+  );
+
+  console.log(data);
+};
+
 const videoIndexer = async () => {
   const accessToken = await getAccessToken();
+  const videourl = process.env.VIDEO_URL;
 
-  console.log(accessToken);
-
-  //   const videoIndexerRequest = await axios.get(
-  //     `${apiUrl}/${accountLocation}/Accounts/${accountId}/Videos`,
-  //     {
-  //       headers: {
-  //         "Ocp-Apim-Subscription-Key": apiKey,
-  //         "x-ms-client-request-id": require("uuid").v4(),
-  //         Authorization: `Bearer ${accessToken}`,
-  //       },
-  //     }
-  //   );
-
-  //   console.log(videoIndexerRequest);
+  await uploadVideo(accessToken, videourl);
 };
 
 videoIndexer();
