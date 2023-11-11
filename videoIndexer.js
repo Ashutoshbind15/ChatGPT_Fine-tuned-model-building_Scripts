@@ -52,11 +52,33 @@ const uploadVideo = async (accessToken, videoUrl) => {
   console.log(data);
 };
 
+const analyzeVideo = async (accessToken, videoId) => {
+  const queryParams = createQueryString({
+    language: "English",
+  });
+
+  const { data } = await axios.get(
+    `${apiUrl}/${accountLocation}/Accounts/${accountId}/Videos/${videoId}/Index?${queryParams}`,
+    {
+      headers: {
+        "x-ms-client-request-id": v4(),
+        Authorization: `Bearer ${accessToken}`,
+        "Ocp-Apim-Subscription-Key": apiKey,
+      },
+    }
+  );
+
+  console.log(data);
+};
+
 const videoIndexer = async () => {
   const accessToken = await getAccessToken();
   const videourl = process.env.VIDEO_URL;
 
-  await uploadVideo(accessToken, videourl);
+  // await uploadVideo(accessToken, videourl);
+
+  const videoId = process.env.DEMO_VIDEO_UPLOAD_ID;
+  await analyzeVideo(accessToken, videoId);
 };
 
 videoIndexer();
