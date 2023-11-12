@@ -12,3 +12,5 @@ const connectDB = async () => {
     console.log("❌ DB Connection Error", error);
   }
 };
+
+export default connectDB;

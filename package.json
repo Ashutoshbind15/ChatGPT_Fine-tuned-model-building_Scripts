@@ -6,8 +6,8 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon script.js",
-    "testvid": "node videoIndexer.js"
+    "dev": "nodemon index.js",
+    "testdev": "node index.js"
   },
   "keywords": [],
   "author": "",

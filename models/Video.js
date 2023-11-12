@@ -10,8 +10,13 @@ const VideoSchema = new mongoose.Schema({
     required: "Title is required",
   },
   description: String,
+  data: {
+    type: Object,
+    default: {},
+    required: "Data is required",
+  },
 });
 
-const VideModel = mongoose.model("Video", VideoSchema);
+const Video = mongoose.model("Video", VideoSchema);
 
-export default VideModel;
+export default Video;
